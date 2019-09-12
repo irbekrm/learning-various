@@ -6,6 +6,8 @@ _vault policy list_ // list all existing policies
 
 ## approles
 
+_vault auth enable approle_ // enable approle
+
 _vault list /auth/approle/role_ // list all existing roles
 
 _vault read /auth/approle/role/\<role-name\>/role-id_ // view role id
