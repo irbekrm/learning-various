@@ -20,5 +20,9 @@ _rm -rf ~/.vault-token_ // remove the old token
 
 _curl --request POST --data '{"role_id":"\<role-id\>","secret_id":"\<secret-id\>"}' \<vault-url\>/v1/auth/approle/login_ // get auth token
 
+## help
+
+_vault path-help \<path\>_ // show what path are available at the specific path
+
 
 
