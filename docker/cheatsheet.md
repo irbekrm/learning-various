@@ -2,7 +2,7 @@
 
 ## Running a container
 
-_docker run \<image\> \<some-command\> // Override the default startup command
+_docker run \<image\> \<some-command\>_ // Override the default startup command
 
 _docker run -it \<image\> sh_ // Start a container with STDIN attached to sh
 
@@ -18,6 +18,10 @@ _docker stop \<container-id\>_ // stop a container. Docker will send a SIGSTOP s
 
 _docker kill \<container-id\>_ // kill the container process (SIGKILL)
 
+## Building an image
+
+_docker build \<path-to-dir-with-dockerfile\>_ // Build an image from a Dockerfile
+
 ## General
 
 _docker ps_ // list running containers
@@ -26,4 +30,4 @@ _docker ps --all_ // all containers (ids, statuses etc)
 
 _docker system prune_ // clean up (clean dangling build cache, remove stopped images etc)
 
-_docker logs \<container-id\> // get all logs from a container
+_docker logs \<container-id\>_ // get all logs from a container
