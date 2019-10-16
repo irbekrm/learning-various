@@ -20,7 +20,9 @@ _docker kill \<container-id\>_ // kill the container process (SIGKILL)
 
 ## Building an image
 
-_docker build \<path-to-dir-with-dockerfile\>_ // Build an image from a Dockerfile
+_docker build \<path-to-build-context\>_ // Build an image from a Dockerfile
+
+_docker build \<dockerhub-id\>/\<project-name\>:<tag>_ // Tag an image. Default tag is 'latest'
 
 ## General
 
