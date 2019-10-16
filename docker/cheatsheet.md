@@ -23,6 +23,8 @@ _docker kill \<container-id\>_ // kill the container process (SIGKILL)
 _docker build \<path-to-build-context\>_ // Build an image from a Dockerfile
 
 _docker build \<dockerhub-id\>/\<project-name\>:<tag>_ // Tag an image. Default tag is 'latest'
+  
+_docker commit -c 'CMD ["\<startup-command\>"] \<container-id\>_ // Manually create an image from a running container
 
 ## General
 
