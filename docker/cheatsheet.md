@@ -6,9 +6,11 @@ _docker run \<image\> \<some-command\>_ // Override the default startup command
 
 _docker run -it \<image\> sh_ // Start a container with STDIN attached to sh
 
-_docker create \<image\>_ // Create a container
+_docker run \<host-port\>:\<container-port\> \<image\>_ // Port mapping. Allow ingress traffic into container (from host port to container port)
 
-_docker start \<container-id\>_ // Start a created container
+_docker create \<image\>_ // Create a container (places fs snapshot on the section of hard drive allocated)
+
+_docker start \<container-id\>_ // Start a created container (runs the startup command)
 
 _docker exec -it \<container-id\> \<some-command\>_ // execute an additional command inside a running container
 
