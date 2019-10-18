@@ -6,6 +6,8 @@ _docker run \<image\> \<some-command\>_ // Override the default startup command
 
 _docker run -it \<image\> sh_ // Start a container with STDIN attached to sh
 
+_docker run -d \<image\>_ // Run container in the background
+
 _docker run \<host-port\>:\<container-port\> \<image\>_ // Port mapping. Allow ingress traffic into container (from host port to container port)
 
 _docker create \<image\>_ // Create a container (places fs snapshot on the section of hard drive allocated)
@@ -37,3 +39,15 @@ _docker ps --all_ // all containers (ids, statuses etc)
 _docker system prune_ // clean up (clean dangling build cache, remove stopped images etc)
 
 _docker logs \<container-id\>_ // get all logs from a container
+
+## Docker Compose
+
+_docker-compose up_ // Will run the containers specified in docker-compose.yml and build if images don't exist
+
+_docker-compose up --build_ // Will re-build images and run containers for services specified in docker-compose.yml
+
+_docker-compose up -d_ // Start in the background
+
+_docker-compose down_ // Stop and remove containers
+
+_docker-compose ps_ // List running containers
