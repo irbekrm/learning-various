@@ -11,7 +11,7 @@ resources:
   source:
     uri: git@github.com:irbekrm/learning-various.git
     paths:
-    - basics/react-app
+    - docker/basics/react-app/client
 - name: this-pipeline
   type: concourse-pipeline
   icon: concourse-ci
