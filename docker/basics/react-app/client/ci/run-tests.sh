@@ -1,7 +1,7 @@
 #!/bin/sh
 
 set -x
-set -euo pipefail
+set -e pipefail
 
 cd react-app/docker/basics/react-app/client
 
