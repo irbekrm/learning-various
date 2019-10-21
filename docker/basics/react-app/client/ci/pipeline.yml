@@ -1,0 +1,41 @@
+resource_types:
+- name: concourse-pipeline
+  type: docker-image
+  source:
+    repository: concourse/concourse-pipeline-resource
+
+resources:
+- name: react-app
+  type: git
+  icon: github-circle
+  source:
+    uri: git@github.com:irbekrm/learning-various.git
+    paths:
+    - basics/react-app
+- name: this-pipeline
+  type: concourse-pipeline
+  icon: concourse-ci
+  source:
+    target: {{concourse_url}}
+    teams:
+    - name: main
+      username: {{concourse_user}}
+      password: {{concourse_password}}
+
+jobs:
+- set-pipeline
+  plan:
+    - get: react-app
+      trigger: true
+    - put: this-pipeline
+      params:
+        pipelines: react-app-fe
+        team: main
+        config_file: react-app/docker/basics/react-app/client/ci/pipeline.yml
+- run-tests
+  plan:
+    - get: react-app
+      passed: [set-pipeline]
+      trigger: true
+    - task: run-tests
+      file: react-app/docker/basics/react-app/client/ci/run-tests.yml
