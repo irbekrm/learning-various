@@ -23,19 +23,19 @@ resources:
       password: {{concourse_password}}
 
 jobs:
-- set-pipeline
+- name: set-pipeline
   plan:
-    - get: react-app
-      trigger: true
-    - put: this-pipeline
-      params:
-        pipelines: react-app-fe
-        team: main
-        config_file: react-app/docker/basics/react-app/client/ci/pipeline.yml
-- run-tests
+  - get: react-app
+    trigger: true
+  - put: this-pipeline
+    params:
+      pipelines: react-app-fe
+      team: main
+      config_file: react-app/docker/basics/react-app/client/ci/pipeline.yml
+- name: run-tests
   plan:
-    - get: react-app
-      passed: [set-pipeline]
-      trigger: true
-    - task: run-tests
-      file: react-app/docker/basics/react-app/client/ci/run-tests.yml
+  - get: react-app
+    passed: [set-pipeline]
+    trigger: true
+  - task: run-tests
+    file: react-app/docker/basics/react-app/client/ci/run-tests.yml
