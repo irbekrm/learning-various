@@ -9,7 +9,7 @@ resources:
   type: git
   icon: github-circle
   source:
-    uri: git@github.com:irbekrm/learning-various.git
+    uri: https://github.com/irbekrm/learning-various.git
     paths:
     - docker/basics/react-app/client
 - name: this-pipeline
