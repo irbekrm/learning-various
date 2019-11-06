@@ -35,19 +35,19 @@ resources:
   type: git
   icon: github-circle
   source:
-    uri: git@github.com:irbekrm/learning-various.git
+    uri: https://github.com/irbekrm/learning-various.git
     paths: [bosh/bosh-deploy]
 
 - name: this_pipeline
   type: concourse_pipeline
   icon: concourse-ci
   source:
+    insecure: "true"
+    target: ((ci.url))
     teams:
     - name: main
-      target: ((ci.url))
       username: ((ci.username))
       password: ((ci.password))
-      insecure: true
 
 jobs:
 - name: set_pipeline
