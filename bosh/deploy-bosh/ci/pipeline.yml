@@ -15,6 +15,7 @@ resources:
   type: terraform
   icon: terraform
   source:
+    env_name: default
     backend_type: s3
     backend_config:
       bucket: ((s3.bucket))
@@ -36,7 +37,7 @@ resources:
   icon: github-circle
   source:
     uri: https://github.com/irbekrm/learning-various.git
-    paths: [bosh/bosh-deploy]
+    paths: [bosh/deploy-bosh]
 
 - name: this_pipeline
   type: concourse_pipeline
@@ -61,7 +62,7 @@ jobs:
       pipelines:
       - name: pipeline
         team: main
-        config_file: deploy-bosh/learning-various/bosh/deploy-bosh/ci/pipeline.yml
+        config_file: deploy_bosh/bosh/deploy-bosh/ci/pipeline.yml
 
 - name: deploy_infra
   serial: true
