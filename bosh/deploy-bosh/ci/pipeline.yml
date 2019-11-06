@@ -1,0 +1,74 @@
+---
+resource_types:
+- name: terraform
+  type: docker-image
+  source:
+    repository: ljfranklin/terraform-resource
+
+- name: concourse_pipeline
+  type: docker-image
+  source:
+    repository: concourse/concourse-pipeline-resource
+
+resources:
+- name: tf_infra
+  type: terraform
+  icon: terraform
+  source:
+    backend_type: s3
+    backend_config:
+      bucket: ((s3.bucket))
+      key: ((s3.tf_state_path))
+      region: ((s3.region))
+      access_key: ((s3.access_key))
+      secret_key: ((s3.secret_key))
+    vars:
+      region: ((infra.region))
+      default_az: ((infra.az))
+      source_ips: ((infra.source_ips))
+    env:
+      AWS_ACCESS_KEY_ID: ((infra.access_key))
+      AWS_SECRET_KEY: ((infra.secret_key))
+      AWS_DEFAULT_REGION: ((infra.region))
+
+- name: deploy_bosh
+  type: git
+  icon: github-circle
+  source:
+    uri: git@github.com:irbekrm/learning-various.git
+    paths: [bosh/bosh-deploy]
+
+- name: this_pipeline
+  type: concourse_pipeline
+  icon: concourse-ci
+  source:
+    teams:
+    - name: main
+      target: ((ci.url))
+      username: ((ci.username))
+      password: ((ci.password))
+      insecure: true
+
+jobs:
+- name: set_pipeline
+  serial: true
+  plan:
+  - get: this_pipeline
+  - get: deploy_bosh
+    trigger: true
+  - put: this_pipeline
+    params:
+      pipelines:
+      - name: pipeline
+        team: main
+        config_file: deploy-bosh/learning-various/bosh/deploy-bosh/ci/pipeline.yml
+
+- name: deploy_infra
+  serial: true
+  plan:
+  - get: deploy_bosh
+    trigger: true
+    passed: [set_pipeline]
+  - put: tf_infra
+    params:
+      terraform_source: deploy_bosh/bosh/deploy-bosh/terraform/main
