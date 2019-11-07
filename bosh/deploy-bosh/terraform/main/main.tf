@@ -35,6 +35,7 @@ resource "aws_security_group" "bosh" {
 
 resource "aws_security_group_rule" "self_access" {
   type = "ingress"
+  protocol = "tcp"
   from_port = 0
   to_port = 65535
   security_group_id = aws_security_group.bosh.id
@@ -44,25 +45,31 @@ resource "aws_security_group_rule" "self_access" {
 resource "aws_security_group_rule" "outside_ssh_access" {
   count = length(var.source_ips)
   type = "ingress"
+  protocol = "tcp"
   cidr_blocks = "${element(var.source_ips, count.index)}/32"
   from_port = 22
   to_port = 22
+  security_group_id = aws_security_group.bosh.id
 }
 
 resource "aws_security_group_rule" "bosh_agent_1" {
   count = length(var.source_ips)
   type = "ingress"
-  cidr_blocks = "${element(var.source_ips, count.index)}/32"
+  protocol = "tcp"
+  cidr_blocks = "[${element(var.source_ips, count.index)}/32]"
   from_port = 6868
   to_port = 6868
+  security_group_id = aws_security_group.bosh.id
 }
 
 resource "aws_security_group_rule" "bosh_agent_2" {
   count = length(var.source_ips)
   type = "ingress"
-  cidr_blocks = "${element(var.source_ips, count.index)}/32"
+  protocol = "tcp"
+  cidr_blocks = "[${element(var.source_ips, count.index)}/32]"
   from_port = 25555
   to_port = 25555
+  security_group_id = aws_security_group.bosh.id
 }
 
 
