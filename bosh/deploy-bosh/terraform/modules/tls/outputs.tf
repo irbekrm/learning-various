@@ -3,5 +3,5 @@ output "ssh_private_key" {
 }
 
 output "ssh_public_key" {
-    value = tls_private_key.bosh_private_key.public_key_pem
+    value = tls_private_key.bosh_private_key.public_key_openssh
 }
