@@ -66,10 +66,22 @@ jobs:
 
 - name: deploy_infra
   serial: true
+  serial_groups: [infra]
   plan:
   - get: deploy_bosh
     trigger: true
     passed: [set_pipeline]
   - put: tf_infra
     params:
+      terraform_source: deploy_bosh/bosh/deploy-bosh/terraform/main
+    
+- name: destroy_infra
+  serial: true
+  serial_groups: [infra]
+  plan:
+  - get: deploy_bosh
+    passed: [set_pipeline]
+  - put: tf_infra
+    params:
+      action: destroy
       terraform_source: deploy_bosh/bosh/deploy-bosh/terraform/main
