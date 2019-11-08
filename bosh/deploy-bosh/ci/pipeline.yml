@@ -15,7 +15,7 @@ resources:
   type: terraform
   icon: terraform
   source:
-    env_name: default
+    env_name: bosh
     backend_type: s3
     backend_config:
       bucket: ((s3.bucket))
@@ -85,3 +85,5 @@ jobs:
     params:
       action: destroy
       terraform_source: deploy_bosh/bosh/deploy-bosh/terraform/main
+    get_params:
+      action: destroy
