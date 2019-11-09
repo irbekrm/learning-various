@@ -36,7 +36,7 @@ resources:
   type: git
   icon: github-circle
   source:
-    uri: https://github.com/irbekrm/learning-various.git
+    uri: ((gh_uri))
     paths: [bosh/deploy-bosh]
 
 - name: this_pipeline
@@ -60,7 +60,7 @@ jobs:
   - put: this_pipeline
     params:
       pipelines:
-      - name: pipeline
+      - name: ((ci.pipeline))
         team: main
         config_file: deploy_bosh/bosh/deploy-bosh/ci/pipeline.yml
 
