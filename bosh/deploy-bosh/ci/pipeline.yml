@@ -39,6 +39,12 @@ resources:
     uri: ((gh_uri))
     paths: [bosh/deploy-bosh]
 
+- name: manifests
+  type: git
+  icon: github-circle
+  source:
+    uri: https://github.com/cloudfoundry/bosh-deployment.git
+
 - name: this_pipeline
   type: concourse_pipeline
   icon: concourse-ci
@@ -59,7 +65,7 @@ resources:
     region_name: ((s3.region))
     versioned_file: director-state
     initial_version: director-state
-    
+
 jobs:
 - name: set_pipeline
   serial: true
@@ -102,6 +108,7 @@ jobs:
   serial: true 
   plan:
   - in_parallel:
+    - get: manifests
     - get: deploy_bosh
       trigger: true
       passed: [deploy_infra]
@@ -110,7 +117,7 @@ jobs:
       passed: [deploy_infra]
     - get: director_state
   - task: create_env
-    file: deploy_bosh/bosh/deploy_bosh/ci/tasks/create_env.yml
+    file: deploy_bosh/bosh/deploy-bosh/ci/tasks/create_env.yml
     params:
       AWS_ACCESS_KEY_ID: ((infra.access_key))
       AWS_SECRET_KEY: ((infra.secret_key))

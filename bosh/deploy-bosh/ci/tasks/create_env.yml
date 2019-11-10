@@ -6,16 +6,16 @@ image_resource:
   source: engineerbetter/pcf-ops
 
 inputs:
-- name: deploy_bosh
-- name: tf_outputs
+- name: deploy-bosh
+- name: tf-outputs
 - name: manifests
-- name: director_state
+- name: director-state
 
 outputs:
 - name: director-state
 
 run:
-  path: deploy_bosh/bosh/deploy-bosh/ci/tasks/create_env.sh
+  path: deploy-bosh/bosh/deploy-bosh/ci/tasks/create-env.sh
 
 params:
 AWS_ACCESS_KEY_ID:
