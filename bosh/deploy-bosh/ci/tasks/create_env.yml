@@ -3,7 +3,8 @@ platform: linux
 
 image_resource:
   type: docker-image
-  source: engineerbetter/pcf-ops
+    source: 
+      repository: engineerbetter/pcf-ops
 
 inputs:
 - name: deploy-bosh
