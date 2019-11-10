@@ -19,4 +19,4 @@ bosh create-env manifests/bosh.yml \
   -v access_key_id="${AWS_ACCESS_KEY_ID}" \
   -v secret_access_key="${AWS_SECRET_ACCESS_KEY}"
 
-tar -czvf outputs/direcor.tar.gz state_bucket/state.json state_bucket/creds.yml
+tar -czvf outputs/director.tar.gz state_bucket/state.json state_bucket/creds.yml
