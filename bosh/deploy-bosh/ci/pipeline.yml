@@ -120,7 +120,7 @@ jobs:
     file: deploy_bosh/bosh/deploy-bosh/ci/tasks/create_env.yml
     params:
       AWS_ACCESS_KEY_ID: ((infra.access_key))
-      AWS_SECRET_KEY: ((infra.secret_key))
+      AWS_SECRET_ACCESS_KEY: ((infra.secret_key))
   - put: director_state
     params:
       file: director_state
