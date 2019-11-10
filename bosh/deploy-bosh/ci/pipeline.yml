@@ -58,7 +58,8 @@ resources:
     secret_access_key: ((s3.secret_key))
     region_name: ((s3.region))
     versioned_file: director-state
-
+    initial_version: director-state
+    
 jobs:
 - name: set_pipeline
   serial: true
