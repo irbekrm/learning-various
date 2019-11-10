@@ -3,6 +3,7 @@
 set -eoux pipefail
 
 jq -r '.bosh_ssh_key' tf_infra/metadata > private_key.pem
+chmod 400 private_key.pem
 
 # Interpolate values from Terraform outputs
 
