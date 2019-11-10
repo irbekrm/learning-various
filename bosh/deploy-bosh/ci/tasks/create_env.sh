@@ -1,5 +1,7 @@
 #/bin/bash
 
+set -eoux pipefail
+
 jq -r '.bosh_ssh_key' > private_key.pem
 
 # Interpolate values from Terraform outputs
