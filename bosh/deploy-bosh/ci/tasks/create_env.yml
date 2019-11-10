@@ -13,7 +13,7 @@ inputs:
 - name: state_bucket
 
 outputs:
-- name: director_state
+- name: state_bucket
 
 run:
   path: deploy_bosh/bosh/deploy-bosh/ci/tasks/create_env.sh
