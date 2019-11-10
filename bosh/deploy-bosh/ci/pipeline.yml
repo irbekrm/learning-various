@@ -123,5 +123,5 @@ jobs:
       AWS_SECRET_KEY: ((infra.secret_key))
   - put: director_state
     params:
-      file: director-state
+      file: director_state
     
