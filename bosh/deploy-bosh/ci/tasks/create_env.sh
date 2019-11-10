@@ -11,7 +11,7 @@ bosh create-env manifests/bosh.yml \
   --vars-store=state_bucket/creds.yml \
   -o manifests/aws/cpi.yml \
   --vars-file=tf_infra/metadata \
-  --var-file private_key=./private_key.pem 
+  --var-file private_key=./private_key.pem \
   -v director_name=bosh \
   -v access_key_id="${AWS_ACCESS_KEY_ID}" \
   -v secret_access_key="${AWS_SECRET_ACCESS_KEY}"
