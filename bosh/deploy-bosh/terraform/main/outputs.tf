@@ -18,7 +18,7 @@ output "internal_cidr" {
 }
 
 output "internal_gw" {
-  value = cidrhost(aws_subnet.bosh_public_subnet.cidr_block, 0)
+  value = cidrhost(aws_subnet.bosh_public_subnet.cidr_block, 1)
 }
 
 output "internal_ip" {
