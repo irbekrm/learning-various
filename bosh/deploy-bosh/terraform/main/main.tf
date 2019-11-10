@@ -73,7 +73,19 @@ resource "aws_security_group_rule" "bosh_agent_2" {
   security_group_id = aws_security_group.bosh.id
 }
 
+resource "aws_internet_gateway" "bosh" {
+  vpc_id = aws_vpc.bosh_vpc.id
 
+  tags = {
+    Name = "BOSH VPC"
+  }
+}
+
+resource "aws_route" {
+  route_table_id = aws_vpc.bosh_vpc.main_route_table_id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id = aws_internet_gateway.bosh.id
+}
 
 
 
