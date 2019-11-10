@@ -2,13 +2,13 @@
 
 set -eoux pipefail
 
-jq -r '.bosh_ssh_key' > private_key.pem
+jq -r '.bosh_ssh_key' tf_infra/metadata > private_key.pem
 
 # Interpolate values from Terraform outputs
 
 bosh create-env manifests/bosh.yml \
-  --state=director_state/state.json \
-  --vars-store=director_state/creds.yml \
+  --state=state_bucket/director_state/state.json \
+  --vars-store=state_bucket/director_state/creds.yml \
   -o manifests/cpi.yml \
   --vars-file=tf_infra/metadata \
   -v director-name=bosh \

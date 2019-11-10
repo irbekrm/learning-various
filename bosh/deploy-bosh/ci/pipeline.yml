@@ -56,7 +56,7 @@ resources:
       username: ((ci.username))
       password: ((ci.password))
 
-- name: director_state
+- name: state_bucket
   type: s3
   source:
     bucket: ((s3.bucket))
@@ -115,13 +115,13 @@ jobs:
     - get: tf_infra
       trigger: true
       passed: [deploy_infra]
-    - get: director_state
+    - get: state_bucket
   - task: create_env
     file: deploy_bosh/bosh/deploy-bosh/ci/tasks/create_env.yml
     params:
       AWS_ACCESS_KEY_ID: ((infra.access_key))
       AWS_SECRET_ACCESS_KEY: ((infra.secret_key))
-  - put: director_state
+  - put: state_bucket
     params:
-      file: director_state
+      file: state_bucket/director_state
     

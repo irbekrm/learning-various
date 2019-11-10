@@ -10,7 +10,7 @@ inputs:
 - name: deploy_bosh
 - name: tf_infra
 - name: manifests
-- name: director_state
+- name: state_bucket
 
 outputs:
 - name: director_state
