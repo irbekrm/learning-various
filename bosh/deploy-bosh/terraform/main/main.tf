@@ -82,7 +82,7 @@ resource "aws_internet_gateway" "bosh" {
 }
 
 resource "aws_route_table" "bosh" {
-  vpc_id = aws_vpc.bosh_vpc_id
+  vpc_id = aws_vpc.bosh_vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
