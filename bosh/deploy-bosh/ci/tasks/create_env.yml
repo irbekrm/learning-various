@@ -16,7 +16,7 @@ outputs:
 - name: director_state
 
 run:
-  path: deploy-bosh/bosh/deploy-bosh/ci/tasks/create_env.sh
+  path: deploy_bosh/bosh/deploy-bosh/ci/tasks/create_env.sh
 
 params:
   AWS_ACCESS_KEY_ID:
