@@ -37,3 +37,6 @@ output "region" {
   value = var.region
 }
 
+output "external_ip" {
+  value = aws_eip.static_ip.public_ip
+}

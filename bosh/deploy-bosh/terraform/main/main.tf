@@ -20,6 +20,7 @@ resource "aws_subnet" "bosh_public_subnet" {
 }
 
 resource "aws_eip" "static_ip" {
+  vpc = true
 }
 
 resource "aws_key_pair" "bosh_key_pair" {
