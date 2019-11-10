@@ -63,8 +63,8 @@ resources:
     access_key_id: ((s3.access_key))
     secret_access_key: ((s3.secret_key))
     region_name: ((s3.region))
-    versioned_file: director-state
-    initial_version: director-state
+    versioned_file: director_state
+    initial_version: director_state
 
 jobs:
 - name: set_pipeline

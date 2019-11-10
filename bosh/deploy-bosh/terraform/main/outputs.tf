@@ -17,7 +17,7 @@ output "internal_cidr" {
   value = aws_subnet.bosh_public_subnet.cidr_block
 }
 
-output "internal_gateway" {
+output "internal_gw" {
   value = cidrhost(aws_subnet.bosh_public_subnet.cidr_block, 0)
 }
 
@@ -26,9 +26,14 @@ output "internal_ip" {
 }
 
 output "default_key_name" {
-  value = aws_key_pair.bosh.key_name
+  value = aws_key_pair.bosh_key_pair.key_name
 }
 
 output "default_security_groups" {
   value = [aws_security_group.bosh.name]
 }
+
+output "region" {
+  value = var.region
+}
+
