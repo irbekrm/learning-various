@@ -15,7 +15,7 @@ resources:
   type: terraform
   icon: terraform
   source:
-    env_name: bosh
+    env_name: deploy-bosh
     backend_type: s3
     backend_config:
       bucket: ((s3.bucket))
@@ -49,6 +49,15 @@ resources:
     - name: main
       username: ((ci.username))
       password: ((ci.password))
+
+- name: director_state
+  type: s3
+  source:
+    bucket: ((s3.bucket))
+    access_key_id: ((s3.access_key))
+    secret_access_key: ((s3.secret_key))
+    region_name: ((s3.region))
+    versioned_file: director-state
 
 jobs:
 - name: set_pipeline
@@ -87,3 +96,24 @@ jobs:
       terraform_source: deploy_bosh/bosh/deploy-bosh/terraform/main
     get_params:
       action: destroy
+    
+- name: create_env
+  serial: true 
+  plan:
+  - in_parallel:
+    - get: deploy_bosh
+      trigger: true
+      passed: [deploy_infra]
+    - get: tf_infra
+      trigger: true
+      passed: [deploy_infra]
+    - get: director_state
+  - task: create_env
+    file: deploy_bosh/bosh/deploy_bosh/ci/tasks/create_env.yml
+    params:
+      AWS_ACCESS_KEY_ID: ((infra.access_key))
+      AWS_SECRET_KEY: ((infra.secret_key))
+  - put: director_state
+    params:
+      file: director-state
+    

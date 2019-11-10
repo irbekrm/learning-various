@@ -1,0 +1,22 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source: engineerbetter/pcf-ops
+
+inputs:
+- name: deploy-bosh
+- name: tf-outputs
+- name: manifests
+- name: director-state
+
+outputs:
+- name: director-state
+
+run:
+  path: deploy-bosh/bosh/deploy-bosh/ci/tasks/create-env.sh
+
+params:
+AWS_ACCESS_KEY_ID:
+AWS_SECRET_ACCESS_KEY:
