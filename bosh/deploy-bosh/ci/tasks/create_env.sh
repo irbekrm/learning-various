@@ -5,6 +5,8 @@ set -eoux pipefail
 jq -r '.bosh_ssh_key' tf_infra/metadata > private_key.pem
 
 # Interpolate values from Terraform outputs
+export BOSH_LOG_LEVEL=debug
+export BOSH_LOG_PATH=/tmp/bosh_logs
 
 bosh create-env manifests/bosh.yml \
   --state=state_bucket/state.json \
