@@ -16,3 +16,7 @@ lib::bash_variables::bash_source
 # readlink command prints the actual filename of a symbolic link
 echo "Testing readlink command..."
 lib::linux_commands::readlink
+
+#tr command for text transformation
+echo "Transform text with 'tr'..."
+lib::linux_commands::tr
