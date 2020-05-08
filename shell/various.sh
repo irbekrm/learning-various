@@ -8,6 +8,7 @@ source "${THE_ROOT}/lib/bash_variables.sh"
 source "${THE_ROOT}/lib/linux_commands.sh"
 source "${THE_ROOT}/lib/useful.sh"
 source "${THE_ROOT}/lib/variables.sh"
+source "${THE_ROOT}/lib/redirection.sh"
 
 # BASH_SOURCE vs $0
 # https://stackoverflow.com/questions/35006457/choosing-between-0-and-bash-source
@@ -27,3 +28,6 @@ lib::useful::random
 
 # Setting variables if unset/null
 lib::variables::unsetornull
+
+# Write to stdout/stderr
+lib::redirection::stdout_stderr
