@@ -9,6 +9,8 @@ source "${THE_ROOT}/lib/linux_commands.sh"
 source "${THE_ROOT}/lib/useful.sh"
 source "${THE_ROOT}/lib/variables.sh"
 source "${THE_ROOT}/lib/redirection.sh"
+source "${THE_ROOT}/lib/source1.sh"
+source "${THE_ROOT}/lib/source2.sh"
 
 # BASH_SOURCE vs $0
 # https://stackoverflow.com/questions/35006457/choosing-between-0-and-bash-source
@@ -30,4 +32,13 @@ lib::useful::random
 lib::variables::unsetornull
 
 # Write to stdout/stderr
+# &2 Standard Error
+# &1 Standard Output
+echo "REDIRECTION"
 lib::redirection::stdout_stderr
+
+# If two functions with the same name are defined in two
+# different files that are sourced,
+# the last one sourced will override the other one(s)
+# lib::source2::hello overrides lib::source1::hello
+hello
