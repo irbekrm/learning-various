@@ -11,6 +11,8 @@ source "${THE_ROOT}/lib/variables.sh"
 source "${THE_ROOT}/lib/redirection.sh"
 source "${THE_ROOT}/lib/source1.sh"
 source "${THE_ROOT}/lib/source2.sh"
+source "${THE_ROOT}/lib/conditions.sh"
+source "${THE_ROOT}/lib/interesting.sh"
 
 # BASH_SOURCE vs $0
 # https://stackoverflow.com/questions/35006457/choosing-between-0-and-bash-source
@@ -42,3 +44,9 @@ lib::redirection::stdout_stderr
 # the last one sourced will override the other one(s)
 # lib::source2::hello overrides lib::source1::hello
 hello
+
+# [[ -z ]] [[ -n ]]
+lib::conditions::string
+
+
+lib::interesting::vars_with_prefix
