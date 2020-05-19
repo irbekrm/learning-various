@@ -9,3 +9,19 @@ lib::useful::random()
     # fold -w 6 - wrap lines to the length of 6
     # head -n 1 - pick the first line
 }
+
+lib::useful::expand_dont_run()
+{
+    # without the colon bash would attempt to run the value as a command
+    # https://superuser.com/questions/423980/colon-command-for-bash
+    : "${RANDOM_EXECUTABLE:=executable.sh}"
+    echo ${RANDOM_EXECUTABLE}
+}
+
+lib::useful::print_key()
+{
+    local key="alpha\nbeta\ngamma"
+    echo "Key is ${key}"
+    echo "Formatted key is:"
+    printf -- "${key}"
+}

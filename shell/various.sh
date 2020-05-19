@@ -50,3 +50,7 @@ lib::conditions::string
 
 
 lib::interesting::vars_with_prefix
+
+lib::useful::expand_dont_run
+
+lib::useful::print_key
