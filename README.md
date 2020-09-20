@@ -1,3 +1,3 @@
 # learning-various
 
-Learning notes for Docker and Vault. Cheatsheets for often used commands.
+Learning notes for Kubernetes, Docker, Vault etc. Cheatsheets for often used commands.
