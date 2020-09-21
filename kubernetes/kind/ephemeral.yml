@@ -1,29 +1,5 @@
 # Adapted example from https://medium.com/01001101/ephemeral-containers-the-future-of-kubernetes-workload-debugging-c5b7ded3019f
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
-kubeadmConfigPatches:
-- |
-  apiVersion: kubeadm.k8s.io/v1beta2
-  kind: ClusterConfiguration
-  metadata:
-    name: config
-  apiServer:
-    extraArgs:
-      "feature-gates": "EphemeralContainers=true"
-  scheduler:
-    extraArgs:
-      "feature-gates": "EphemeralContainers=true"
-  controllerManager:
-    extraArgs:
-      "feature-gates": "EphemeralContainers=true"
-- |
-  apiVersion: kubeadm.k8s.io/v1beta2
-  kind: InitConfiguration
-  metadata:
-    name: config
-  nodeRegistration:
-    kubeletExtraArgs:
-      "feature-gates": "EphemeralContainers=true"
-nodes:
-- role: control-plane
-- role: worker
+featureGates:
+ EphemeralContainers: true
