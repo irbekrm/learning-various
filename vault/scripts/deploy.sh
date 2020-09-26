@@ -16,12 +16,12 @@ while [[ "Running" != "$running" ]]; do
     running=$(kubectl get pod --selector app=vault --output jsonpath="{.items[0].status.phase}")
 done
 
-# Port forward 
-VAULT_POD=$(kubectl get pod --selector app=vault --output jsonpath="{.items[0].metadata.name}")
 
+vault_pod=$(kubectl get pod --selector app=vault --output jsonpath="{.items[0].metadata.name}")
 cat << EOF
+ Vault is now up and running.
  To access Vault run
- kubectl port-forward "${VAULT_POD}" 8200:8200 &
+ kubectl port-forward "${vault_pod}" 8200:8200 &
  export VAULT_ADDR="http://127.0.0.1:8200"
  export VAULT_TOKEN="root"
 EOF
