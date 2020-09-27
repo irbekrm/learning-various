@@ -2,9 +2,13 @@
 
 set -eux
 
-# needs to be ran from learning-various/vault
+# This script is mostly ripped from https://github.com/hashicorp/secrets-store-csi-driver-provider-vault/blob/master/docs/vault-setup.md
 
-# Mostly ripped from https://github.com/hashicorp/secrets-store-csi-driver-provider-vault/blob/master/docs/vault-setup.md
+# Full path of the directory inside which is this script
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+# Full path of the learning-various repo
+ROOT="${DIR}/../../../.."
+SECRETSSTORE_PATH="${ROOT}/kubernetes/csi/secretsstore"
 
 function cleanup()
 {
@@ -12,7 +16,7 @@ function cleanup()
 }
 
 # deploy Vault
-./scripts/deploy.sh
+"${ROOT}/vault/scripts/deploy.sh"
 
 # Export Vault creds
 vault_pod=$(kubectl get pod --selector app=vault --output jsonpath="{.items[0].metadata.name}")
@@ -22,10 +26,10 @@ export VAULT_ADDR="http://127.0.0.1:8200"
 export VAULT_TOKEN="root"
 
 # Kubernetes service account for Vault
-kubectl apply -f examples/service-account.yaml
+kubectl apply -f "${SECRETSSTORE_PATH}/examples/vault-sa.yaml"
 
 # Bind the service account to system:auth-delegator clusterrole (create access to tokenreviews and subjectaccessreviews)
-kubectl apply -f examples/vault-clusterrole-binding.yaml
+kubectl apply -f "${SECRETSSTORE_PATH}/examples/vault-clusterrole-binding.yaml"
 
 # enable Kubernetes auth for Vault
 # to be able to authenticate with Vault using k8s SA token
@@ -55,7 +59,7 @@ vault write auth/kubernetes/config \
 # Create a Vault policy that allows reading secrets from a certain paths and
 # a role that has that policy attached
 
-vault policy write csi-readonly examples/readonly-policy.hcl
+vault policy write csi-readonly "${SECRETSSTORE_PATH}/examples/vault-readonly-policy.hcl"
 
 vault write auth/kubernetes/role/csi-role \
   bound_service_account_names=secrets-store-csi-driver \
@@ -69,7 +73,7 @@ vault kv put secret/foo bar=hello
 vault_pod=$(kubectl get pod --selector app=vault --output jsonpath="{.items[0].metadata.name}")
 cat << EOF
  Vault is now up and running.
- To access Vault run
+ To access Vault run the following:
  kubectl port-forward "${vault_pod}" 8200:8200 &
  export VAULT_ADDR="http://127.0.0.1:8200"
  export VAULT_TOKEN="root"
