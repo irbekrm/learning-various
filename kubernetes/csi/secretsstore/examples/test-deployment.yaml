@@ -1,0 +1,20 @@
+# From https://github.com/hashicorp/secrets-store-csi-driver-provider-vault/blob/master/examples/nginx-pod-vault-inline-volume-secretproviderclass.yaml
+kind: Pod
+apiVersion: v1
+metadata:
+  name: nginx-secrets-store-inline
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    volumeMounts:
+    - name: secrets-store-inline
+      mountPath: "/mnt/secrets-store"
+      readOnly: true
+  volumes:
+    - name: secrets-store-inline
+      csi:
+        driver: secrets-store.csi.k8s.io
+        readOnly: true
+        volumeAttributes:
+          secretProviderClass: "vault-foo"

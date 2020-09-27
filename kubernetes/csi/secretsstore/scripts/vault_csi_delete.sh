@@ -14,3 +14,4 @@ SECRETSSTORE_PATH="${ROOT}/kubernetes/csi/secretsstore"
 # Delete the associated resources
 kubectl delete -f "${SECRETSSTORE_PATH}/examples/vault-sa.yaml"
 kubectl delete -f "${SECRETSSTORE_PATH}/examples/vault-clusterrole-binding.yaml"
+kubectl delete -f "${SECRETSSTORE_PATH}/examples/provider-vault-installer.yaml"

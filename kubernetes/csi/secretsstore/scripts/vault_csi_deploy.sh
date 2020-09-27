@@ -10,6 +10,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ROOT="${DIR}/../../../.."
 SECRETSSTORE_PATH="${ROOT}/kubernetes/csi/secretsstore"
 
+# kill kubectl port-forward process
 function cleanup()
 {
     kill $(pgrep kubectl)
@@ -64,11 +65,11 @@ vault policy write csi-readonly "${SECRETSSTORE_PATH}/examples/vault-readonly-po
 vault write auth/kubernetes/role/csi-role \
   bound_service_account_names=secrets-store-csi-driver \
   bound_service_account_namespaces=default \
-  policies=default,example-readonly \
+  policies=default,csi-readonly \
   ttl=20m
 
-# Write an example secret to Vault
-vault kv put secret/foo bar=hello
+# Deploy Secrets Store CSI Vault provider
+kubectl apply -f "${SECRETSSTORE_PATH}/examples/provider-vault-installer.yaml"
 
 vault_pod=$(kubectl get pod --selector app=vault --output jsonpath="{.items[0].metadata.name}")
 cat << EOF
