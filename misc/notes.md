@@ -1,0 +1,1 @@
+* `hexdump -c [FILE]` // See any special characters in a file
