@@ -1,0 +1,134 @@
+# This YAML file demonstrates how to deploy the external
+# health monitor controller for use with the mock CSI driver. It
+# depends on the RBAC definitions from rbac.yaml.
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: csi-external-health-monitor-controller-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      external-health-monitor-controller: mock-driver
+  template:
+    metadata:
+      labels:
+        external-health-monitor-controller: mock-driver
+    spec:
+      serviceAccount: csi-mock
+      shareProcessNamespace: true
+      containers:
+        - name: csi-external-health-monitor-agent
+          image: k8s.gcr.io/sig-storage/csi-external-health-monitor-agent:v0.1.0
+          args:
+            - "--v=5"
+            - "--csi-address=$(ADDRESS)"
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: ADDRESS
+              value: /csi/csi.sock
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+        - name: csi-external-health-monitor-controller
+          image: k8s.gcr.io/sig-storage/csi-external-health-monitor-controller:v0.1.0
+          args:
+            - "--v=5"
+            - "--csi-address=$(ADDRESS)"
+          env:
+            - name: ADDRESS
+              value: /csi/csi.sock
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+        - name: sidecar
+          image: engineerbetter/pcf-ops
+          command: ["sleep","infinity"]
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+          securityContext:
+            privileged: true
+        - name: mock-driver
+          image: k8s.gcr.io/sig-storage/mock-driver:v4.0.1
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - "--disable-attach=true"
+          env:
+            - name: CSI_ENDPOINT
+              value: /csi/csi.sock
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+          securityContext:
+            privileged: true
+
+        - name: csi-provisioner
+          image: k8s.gcr.io/sig-storage/csi-provisioner:v2.0.2
+          args:
+            - "--csi-address=/csi/csi.sock"
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+          # Normally privileged: true is only required for the driver container to perform 
+          # the mount operation. However, privileged container is necessary for systems with 
+          # SELinux, where non-privileged sidecar containers cannot access unix domain socket
+          # created by privileged CSI driver container. The other containers in this file being 
+          # granted privileged permission are for the same reason.
+          securityContext:
+            privileged: true
+
+        - name: node-driver-registrar
+          image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.0.1
+          args:
+            - "--v=5"
+            - "--csi-address=/csi/csi.sock"
+            - "--kubelet-registration-path=/var/lib/kubelet/plugins/io.kubernetes.storage.mock/csi.sock"
+          env:
+            - name: KUBE_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: spec.nodeName
+          securityContext:
+            privileged: true
+          volumeMounts:
+          - mountPath: /csi
+            name: socket-dir
+          - mountPath: /registration
+            name: registration-dir
+
+      volumes:
+        - name: socket-dir
+          hostPath:
+            path: /var/lib/kubelet/plugins/io.kubernetes.storage.mock
+            type: DirectoryOrCreate
+        - name: registration-dir
+          hostPath:
+            path: /var/lib/kubelet/plugins_registry
+            type: Directory
+
+---
+apiVersion: storage.k8s.io/v1
+kind: CSIDriver
+metadata:
+    name: io.kubernetes.storage.mock
+spec:
+    attachRequired: false
+    podInfoOnMount: false
+
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+    name: test-csi-mock 
+provisioner: io.kubernetes.storage.mock
+allowVolumeExpansion: true
+parameters:
