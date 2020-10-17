@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hooks
+data:
+    hooks.yaml: |
+        globals: |
+            count = 0;
+            console.log("Globals loaded, count set to " + count);
+        nodeGetVolumeStatsStart: |
+            count = count + 1;
+            console.log("The value of count is" + count);
+            if (count < 30) {OK;} else { console.log("About to return an internal error"); INTERNAL; };
+        nodeGetVolumeStatsEnd: |
+            console.log("NodeGetVolumeStatsEnd");
