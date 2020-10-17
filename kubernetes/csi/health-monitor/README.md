@@ -3,13 +3,15 @@
 Create RBAC (probably could be given less permissions)
 `kubectl apply -f yamls/rbac.yaml`
 
-Create a pod with:
+A pod with:
 - CSI mock driver
 - CSI external health monitor controller
 - CSI external health monitor agent
 - CSI external provisioner
 - CSI node driver registrar
 - sidecar for testing/debugging
+A CSIDriver object
+A StorageClass object
 
 `kubectl apply -f yamls/deployment.yaml`
 
