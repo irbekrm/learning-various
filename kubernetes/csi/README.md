@@ -15,3 +15,4 @@ More info:
 - [CSI mock driver docs](https://github.com/kubernetes-csi/csi-test/blob/master/hooks-howto.md)
 - [The original PR](https://github.com/kubernetes-csi/csi-test/pull/251)
 - [Example usage in a kubernetes e2e test](https://github.com/kubernetes/kubernetes/commit/a4f080861f3586aae0f235e914526807eeea5cfa)
+- [Example usage in this repo](https://github.com/irbekrm/learning-various/tree/master/kubernetes/csi/health-monitor#testing-the-health-monitor-with-mock-driver-hooks)
