@@ -18,6 +18,12 @@
 - kernel ring buffer- where kernel messages are stored (so that boottime messages are available to syslog)
 - ring buffer- a data structure that is always the same size (older messages get deleted)
 
+#### `vmstat`
+- memory swap-out - when there's no longer free space in physical memory and kernel writes some of the data in memory to disk
+- memory swap-in - when previously swapped out data is needed by a process, so kernel needs to write it to memory again
+- user space time- time CPU spends doing work in user space
+- system space time - time CPU spends doing work in system (kernel space)
+
 
 
 
@@ -26,4 +32,6 @@
 - Brendan Gregg on Linux load average http://www.brendangregg.com/blog/2017-08-08/linux-load-averages.html
 - Brendan Gregg USE method http://www.brendangregg.com/usemethod.html
 - Some useful `dmesg` options https://www.howtoforge.com/linux-dmesg-command/
-- Kernel ring buffer[https://unix.stackexchange.com/questions/198178/what-are-the-concepts-of-kernel-ring-buffer-user-level-log-level]
+- [Kernel ring buffer](https://unix.stackexchange.com/questions/198178/what-are-the-concepts-of-kernel-ring-buffer-user-level-log-level)
+- [memory swap-in/out](https://scoutapm.com/blog/understanding-page-faults-and-memory-swap-in-outs-when-should-you-worry#:~:text=The%20process%20of%20writing%20pages,This%20is%20swapping%2Din.)
+- [real, user and sys time](https://stackoverflow.com/questions/556405/what-do-real-user-and-sys-mean-in-the-output-of-time1)
