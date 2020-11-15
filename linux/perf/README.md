@@ -23,8 +23,8 @@
 - `r`- number of processes waiting for CPU -> saturation
 - `si`/`so` - swap-ins, swap-outs -> whether the server is out of memory
 - `free` - the amount of free memory
-- `us`, `sys` - user space time, system space time. Whether the load is application level or kernel level
-- `wa` - wait for disk I/O -> can point at disk bottleneck
+- `us`, `sys` - user space time, system space time as a percentage of the total CPU time. Whether the load is application level or kernel level
+- `wa` - time spent waiting for disk I/O as a percentage of the total CPU time -> can point at disk bottleneck
 - memory swap-out - when there's no longer free space in physical memory and kernel writes some of the data in memory to disk
 - memory swap-in - when previously swapped out data is needed by a process, so kernel needs to write it to memory again
 - large number of swap-in/swap-out operations can affect performance
@@ -33,10 +33,16 @@
 - system space time - time CPU spends doing work in system (kernel space)
 - CPU saturation- how many processes are _waiting_ for to be executed by the CPU
 
+#### `mpstat`
+- `mpstat -P ALL [interval[count]]` show the usage (similar metrics as for `vmstat`) of each CPU
+- if one CPU is over-used it might mean that a single application (single-threaded?) is consuming a lot of resources
 
+#### `pidstat`
+- `pidstat -p PID [interval[count]]` monitor CPU usage of a specific task
+- `pidstat INTERVAL` seems to continuously show most resource-consuming tasks on the system. Useful to see patterns
+- %CPU column shows the percentage of compute power from all CPUs being used so can be more than 100% (each has max 100%)
 
 ## Useful
-
 `dd if=/dev/urandom of=500MBfile bs=1M count=500` - generate some CPU load (from https://www.thomas-krenn.com/en/wiki/Linux_Performance_Measurements_using_vmstat)
 
 ## Resources
@@ -48,3 +54,5 @@
 - [memory swap-in/out](https://scoutapm.com/blog/understanding-page-faults-and-memory-swap-in-outs-when-should-you-worry#:~:text=The%20process%20of%20writing%20pages,This%20is%20swapping%2Din.)
 - [real, user and sys time](https://stackoverflow.com/questions/556405/what-do-real-user-and-sys-mean-in-the-output-of-time1)
 - [vmstat](https://www.thomas-krenn.com/en/wiki/Linux_Performance_Measurements_using_vmstat)
+- [mpstat manpage](https://linux.die.net/man/1/mpstat)
+- [pidstat manpage](https://linux.die.net/man/1/pidstat)
