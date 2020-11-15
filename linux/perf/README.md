@@ -42,6 +42,18 @@
 - `pidstat INTERVAL` seems to continuously show most resource-consuming tasks on the system. Useful to see patterns
 - %CPU column shows the percentage of compute power from all CPUs being used so can be more than 100% (each has max 100%)
 
+#### `iostat`
+- shows CPU utilization report, device utilization report and NFS utilization report
+- `iostat -xz 1` extended continuous report for recently active devices
+
+#### `free -h`
+- `free -h` free memory including swap memory(`-h` for human readable output)
+- disk buffering- when data is read from disk, it will also be stored in memory for performance reasons (because data is likely to be read multiple times). Same happens on writes - because data that was just written will likely be read and also to first write to cache and at a convenient later point to disk
+- buffer cache- the part of memory used for disk buffering
+- buffer cache will be flushed periodically/when full
+- swap memory- space on hard drive that can be used for memory swapping
+- in `procps` package
+
 ## Useful
 `dd if=/dev/urandom of=500MBfile bs=1M count=500` - generate some CPU load (from https://www.thomas-krenn.com/en/wiki/Linux_Performance_Measurements_using_vmstat)
 
@@ -52,7 +64,9 @@
 - Some useful `dmesg` options https://www.howtoforge.com/linux-dmesg-command/
 - [Kernel ring buffer](https://unix.stackexchange.com/questions/198178/what-are-the-concepts-of-kernel-ring-buffer-user-level-log-level)
 - [memory swap-in/out](https://scoutapm.com/blog/understanding-page-faults-and-memory-swap-in-outs-when-should-you-worry#:~:text=The%20process%20of%20writing%20pages,This%20is%20swapping%2Din.)
-- [real, user and sys time](https://stackoverflow.com/questions/556405/what-do-real-user-and-sys-mean-in-the-output-of-time1)
+- [real, user and sys time](https://stackoverflow.com/questions/556405/what-do-real-user-and-sys-
+mean-in-the-output-of-time1)
+- [swap memory](https://aarvik.dk/what-is-swap-memory-and-how-to-use-it/index.html#:~:text=Swap%20memory%20is%20basically%20parts,space%20for%20extra%20memory%20resources.)
 - [vmstat](https://www.thomas-krenn.com/en/wiki/Linux_Performance_Measurements_using_vmstat)
 - [mpstat manpage](https://linux.die.net/man/1/mpstat)
 - [pidstat manpage](https://linux.die.net/man/1/pidstat)
