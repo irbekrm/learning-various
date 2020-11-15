@@ -19,13 +19,25 @@
 - ring buffer- a data structure that is always the same size (older messages get deleted)
 
 #### `vmstat`
+- `vmstat -w [interval[count]]`
+- `r`- number of processes waiting for CPU -> saturation
+- `si`/`so` - swap-ins, swap-outs -> whether the server is out of memory
+- `free` - the amount of free memory
+- `us`, `sys` - user space time, system space time. Whether the load is application level or kernel level
+- `wa` - wait for disk I/O -> can point at disk bottleneck
 - memory swap-out - when there's no longer free space in physical memory and kernel writes some of the data in memory to disk
 - memory swap-in - when previously swapped out data is needed by a process, so kernel needs to write it to memory again
+- large number of swap-in/swap-out operations can affect performance
+- how aggressively the kernel swaps out memory (i.e writes to disk pages belonging to idle processes) can be configured
 - user space time- time CPU spends doing work in user space
 - system space time - time CPU spends doing work in system (kernel space)
+- CPU saturation- how many processes are _waiting_ for to be executed by the CPU
 
 
 
+## Useful
+
+`dd if=/dev/urandom of=500MBfile bs=1M count=500` - generate some CPU load (from https://www.thomas-krenn.com/en/wiki/Linux_Performance_Measurements_using_vmstat)
 
 ## Resources
 - Netflix blog post on Linux Performance Analysis https://netflixtechblog.com/linux-performance-analysis-in-60-000-milliseconds-accc10403c55
@@ -35,3 +47,4 @@
 - [Kernel ring buffer](https://unix.stackexchange.com/questions/198178/what-are-the-concepts-of-kernel-ring-buffer-user-level-log-level)
 - [memory swap-in/out](https://scoutapm.com/blog/understanding-page-faults-and-memory-swap-in-outs-when-should-you-worry#:~:text=The%20process%20of%20writing%20pages,This%20is%20swapping%2Din.)
 - [real, user and sys time](https://stackoverflow.com/questions/556405/what-do-real-user-and-sys-mean-in-the-output-of-time1)
+- [vmstat](https://www.thomas-krenn.com/en/wiki/Linux_Performance_Measurements_using_vmstat)
