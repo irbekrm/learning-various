@@ -19,5 +19,3 @@ jobs:
     - name: first
       run: |
         ls 
-        whoami
-        pwd
