@@ -18,4 +18,6 @@ jobs:
     steps:
     - name: first
       run: |
-        ls && whoami && pwd
+        ls 
+        whoami
+        pwd
