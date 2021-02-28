@@ -1,0 +1,20 @@
+name: test
+on: 
+  push:
+    branches:
+      - "main"
+    paths-ignore:
+    - 'README.md'
+    tags-ignore:
+    - no_action
+defaults:
+  run:
+    shell: bash
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-20.04
+    steps:
+    - name: first
+      run: |
+        ls && whoami && pwd
