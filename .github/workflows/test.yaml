@@ -16,6 +16,7 @@ jobs:
     name: test
     runs-on: ubuntu-20.04
     steps:
-    - name: first
-      run: |
-        ls 
+    - name: checkout
+      uses: actions/checkout@v2
+    - name: print-contents
+      run: ls
