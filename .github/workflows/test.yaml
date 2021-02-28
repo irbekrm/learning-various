@@ -1,0 +1,13 @@
+name: test
+on: [push]
+defaults:
+  run:
+    shell: bash
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-20.04
+    steps:
+      - first
+        run: |
+          ls && whoami && pwd
