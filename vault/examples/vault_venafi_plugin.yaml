@@ -1,0 +1,102 @@
+# Mostly copied from https://github.com/hashicorp/secrets-store-csi-driver-provider-vault/blob/master/examples/vault.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault
+  labels:
+    app: vault
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vault
+  template:
+    metadata:
+      labels:
+        app: vault
+    spec:
+      terminationGracePeriodSeconds: 10
+      initContainers:
+        - name: download-plugin
+          image: busybox
+          volumeMounts:
+            - mountPath: /etc/vault/vault-plugins
+              name: plugin-dir
+            - mountPath: /etc/vault/scripts
+              name: download-plugin
+          args: 
+          - "sh"
+          - "/etc/vault/scripts/download.sh" 
+      containers:
+      - name: vault
+        image: registry.hub.docker.com/library/vault:1.6.3
+        imagePullPolicy: Always
+        args: ['server', '-dev', '-dev-plugin-dir=/etc/vault/vault-plugins/']
+        securityContext:
+          capabilities:
+            add: ['IPC_LOCK']
+        ports:
+        - containerPort: 8200
+          name: vault-port
+          protocol: TCP
+        - containerPort: 8201
+          name: cluster-port
+          protocol: TCP
+        env:
+        - name: POD_IP_ADDR
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: VAULT_LOCAL_CONFIG
+          value: |
+            api_addr     = "http://127.0.0.1:8200"
+            cluster_addr = "http://$(POD_IP_ADDR):8201"
+        - name: VAULT_DEV_ROOT_TOKEN_ID
+          value: "root" ## THIS IS NOT A PRODUCTION DEPLOYMENT OF VAULT!
+        readinessProbe:
+          httpGet:
+            path: /v1/sys/health
+            port: 8200
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        volumeMounts:
+          - mountPath: /etc/vault/vault-plugins
+            name: plugin-dir
+      volumes:
+        - name: plugin-dir
+          emptyDir: {}
+        - name: download-plugin
+          configMap:
+            name: download-plugin
+            
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vault
+  labels:
+    app: vault
+spec:
+  type: NodePort
+  selector:
+    app: vault
+  ports:
+  - name: vault-port
+    port: 8200
+    targetPort: 8200
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: download-plugin
+data:
+  download.sh: |
+    #!/bin/bash
+    set -x
+    wget https://github.com/Venafi/vault-pki-backend-venafi/releases/download/v0.9.0/venafi-pki-backend_v0.9.0_linux.zip
+    unzip venafi-pki-backend*
+    mv venafi-pki-backend /etc/vault/vault-plugins/

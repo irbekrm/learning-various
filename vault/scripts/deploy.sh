@@ -8,10 +8,11 @@ set -eux
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 # Full path of the learning-various repo
 ROOT="${DIR}/../.."
+MODE="${MODE:-default}"
 VAULT_PATH="${ROOT}/vault"
 
 
-kubectl apply -f "${VAULT_PATH}/examples/vault.yaml"
+kubectl apply -f "${VAULT_PATH}/examples/vault_${MODE}.yaml"
 
 # Check if the pod is running
 running=$(kubectl get pod --selector app=vault --output jsonpath="{.items[0].status.phase}")
